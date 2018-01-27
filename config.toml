@@ -1,0 +1,55 @@
+baseurl = "https://ginolhac.github.com/"
+languageCode = "en"
+title = "ginolhac"
+description = "ginolhac's blog"
+copyright = "&copy; 2018 Ginolhac"
+twitterAuthor = "@kingsushigino"
+theme = "hugo-theme-cactus-plus"
+relativeURLs = true # mandatory for link the theme
+googleAnalytics = "UA-29962051-1"
+disqusShortname = ""
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+[permalinks]
+    post = "/:year/:slug/"
+    page = "/:slug/"
+
+    
+[[menu.main]]
+    name = "Karate"
+    url = "#karate"
+
+[[menu.main]]
+    name = "about"
+    url = "#about/"
+
+[params]
+    description = "ginolhac' blog about computer stuff"
+    bio = "bioinformatic and data science"
+	  twitter = "kingsushigino"
+    enableRSS = false
+
+
+	  disqusShortname = "ginolhac"
+    enableDisqus = true
+    disabledisqus = true
+
+	  enableGoogleAnalytics = true
+	  
+	  highlight = true
+    highlight_languages = ["r", "python", "yaml"]
+
+    home = ""
+    karate = ""
+	  about = ""
+	  archive = ""
+
+    # Choose a font for the social icons in the footer. Either "mono-social" or "font-awesome"
+	  iconFont = "font-awesome"
+    # The social icons can be styled differently if you use mono as font - circle, rounded, or empty
+    socialIconStyle = "rounded"  
+
+[social]
+  twitter-square = "https://twitter.com/kingsushigino"
+  github-square = "https://github.com/ginolhac"
+  linkedin-square = "https://www.linkedin.com/in/aurélien-ginolhac-07b33b92/"
