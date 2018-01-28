@@ -14,9 +14,12 @@ library(tidyverse)
 library(lubridate)
 ```
 
+Teething can be tough for kids, and so for the parents. For our first kid, it was actually pretty painful.
+Then, I wanted to see how synchronize the second kid would be with the first one.
+
 ## Input data
 
-
+This was an old input, now I would use the [datapasta](https://github.com/milesmcbain/datapasta) rstudio addin by Miles Mc Bain to get a `tribble` from any spreadsheet.
 
 ```{r}
 teeth <- data.frame(stringsAsFactors = FALSE,

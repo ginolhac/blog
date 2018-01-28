@@ -1,14 +1,16 @@
 baseurl = "https://ginolhac.github.com/"
 languageCode = "en"
-title = "ginolhac"
-description = "ginolhac's blog"
+title = "Aurélien' blog"
+description = "blog about R, pi and related stuff"
 copyright = "&copy; 2018 Ginolhac"
 twitterAuthor = "@kingsushigino"
 theme = "hugo-theme-cactus-plus"
 relativeURLs = true # mandatory for link the theme
 googleAnalytics = "UA-29962051-1"
-disqusShortname = ""
+disqusShortname = "ginolhac"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+enableDisqus = true
+disabledisqus = true
 
 [permalinks]
     post = "/:year/:slug/"
@@ -21,23 +23,18 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [[menu.main]]
     name = "about"
-    url = "#about/"
+    url = "#about"
 
 [params]
-    description = "ginolhac' blog about computer stuff"
     bio = "bioinformatic and data science"
 	  twitter = "kingsushigino"
     enableRSS = false
 
 
-	  disqusShortname = "ginolhac"
-    enableDisqus = true
-    disabledisqus = true
-
 	  enableGoogleAnalytics = true
 	  
 	  highlight = true
-    highlight_languages = ["r", "python", "yaml"]
+    highlight_languages = ["r", "python", "yaml", "bash"]
 
     home = ""
     karate = ""
