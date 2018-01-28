@@ -37,13 +37,17 @@ Additionally, I purchased:
 
 Was hoping to get some decent pictures / videos with low light. Turned out that IR leds are needed. That goes in the [TODO](#todo) section.
 
+Here is an example of picture with low interior light. Colors are off, but quality is fine to me
+
+![](/images/cam_noIR.jpg)
+
 ## Setting-up the pi
 
 I won't go into details, I mostly followed the instructions in this [tutorial](https://howchoo.com/g/ndy1zte2yjn/how-to-set-up-wifi-on-your-raspberry-pi-without-ethernet). Briefly, here are the main steps
 
 ### download raspbian lite
 
-Since I have no screen, no keyboard and the pi comes with a wifi controler, the **stretch lite** is sufficient. Image can be found at [raspberrypi.org](https://www.raspberrypi.org/downloads/raspbian/)
+Since I have no screen, no keyboard and the pi comes with a WiFi controller, the **stretch lite** is sufficient. Image can be found at [raspberrypi.org](https://www.raspberrypi.org/downloads/raspbian/)
 
 
 ### format SD card
@@ -54,7 +58,7 @@ using disk utility, choose `MS-DOS FAT` file system
 
 Ensure your SD card is the second disk (`/dev/disk2`), otherwise **do** adapt to the correct one!
 
-```
+```{bash}
 unzip 2017-11-29-raspbian-stretch-lite.zip
 sudo dd bs=1m if=2017-11-29-raspbian-stretch-lite.img of=/dev/rdisk2
 ```
@@ -63,7 +67,7 @@ sudo dd bs=1m if=2017-11-29-raspbian-stretch-lite.img of=/dev/rdisk2
 
 Once copied, you can enable **ssh** by creating an empty file at the SD card root
 
-```
+```{bash}
 cd /Volumes/boot/
 touch ssh
 ```
@@ -74,7 +78,7 @@ In order to connect to the pi without screen / keyboard, **wifi** needs to be co
 
 which contains:
 
-```
+```{bash}
 network={
         ssid="your_network_ssid"
         psk="xxx"
@@ -84,7 +88,7 @@ network={
 
 Of note, I recently acquired a pi **zeroWH**, for which I had to add 3 lines ([SO question]()).
 
-```
+```{bash}
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 country=FR
@@ -99,13 +103,13 @@ network={
 
 once the raspberrypi booted, try to find its IP
 
-```
+```{bash}
 nmap -sn 192.168.1.0/24
 ```
 
 which gives:
 
-```
+```{bash}
 Starting Nmap 7.60 ( https://nmap.org ) at 2017-12-08 22:44 CET
 Nmap scan report for 192.168.1.27
 Host is up (0.0071s latency).
@@ -127,7 +131,7 @@ once connected to the pi:
 - run `sudo raspi-config` to activate the camera
 - change password for the `pi` user
 - set up `locales` and timezone
-- update && upgrade raspbian strech
+- update && upgrade raspbian stretch
 - add public `ssh` key to `.ssh/authorized_keys` for password less connection
 
 ## install the surveillance system
@@ -143,7 +147,7 @@ I followed the instructions provided in this great [tutorial](https://www.bouvet
 
 see from here https://motion-project.github.io/motion_build.html
 
-```
+```{bash}
 wget https://github.com/Motion-Project/motion/releases/download/release-4.1.1/pi_stretch_motion_4.1.1-1_armhf.deb
 sudo apt-get install gdebi-core
 sudo gdebi pi_stretch_motion_4.1.1-1_armhf.deb
@@ -173,7 +177,25 @@ lighswitch 80
 auto_brightness on
 ```
 
-## Communication between motion _via_ telegram
+### see live streaming
+
+with this configuration, you should see the live streaming from this URL: [http://192.168.1.27:8081](http://192.168.1.27:8081)
+
+the web control on port **8080** is disabled apart outside the pi, since we'll use telegram to control _motion_
+
+### detection
+
+Here is an example of my kid being detected. The red rectangle works nicely
+
+![](/images/kid_catch.jpg)
+
+But of course, there are false alarms, such as when the light comes in/out suddenly
+
+![](/images/light_false_alarm.jpg)
+
+the parameter `lighswitch 80` reduced the issue but it still exists.
+
+## Communication with motion _via_ telegram
 
 Now comes the fun part. Receiving the motion detection by emails is fine, but it can be done via **Telegram** and the awesome API [`telepot`](http://telepot.readthedocs.io). **Eric** told me about telegram **bots** and it looked promising.
 Actually, you can even _send_ commands to your pi using your phone using those telegram **bots**.
@@ -181,7 +203,7 @@ Actually, you can even _send_ commands to your pi using your phone using those t
 The useful feature I implemented are:
 
 - **alerts**. A motion is detected. Send the best picture to your telegram account.
-- **pause** / **resume** motion detection. Imagine you are away and for some reason (shadows, your own cat) you keep receiving alerts, you may want to remotely _pause_ the dectection. And of course, being able to _resume_ it. Those commands are already in `motion`, we just need to talk to it.
+- **pause** / **resume** motion detection. Imagine you are away and for some reason (shadows, your own cat) you keep receiving alerts, you may want to remotely _pause_ the detection. And of course, being able to _resume_ it. Those commands are already in `motion`, we just need to talk to it.
 - **status**. You haven't received alerts, is the system running smoothly? You can ask for a confirmation that detection is on. Also, check if the camera is on.
 - **snapshot**. No alerts, but you'd like to get a snapshot at any time.
 - **video**. Maybe the nicest feature IMHO. Sending picture to your phone for every detection is fine, but not all videos. Based on the picture you see, you'd like to get the video of the detection. Once again, by a command to a telegram bot, you receive the last video recorded.
@@ -199,11 +221,13 @@ Talk to the `BotFather` and create `mybot`, you will receive a private token.
 
 back on the pi, install `telepot` with `pip`, assuming you installed `python` and `pip`.
 
-```
+```{bash}
 pip install telepot
 ```
 
 ### test sending message
+
+#### get the bot id
 
 ```{python}
 import telepot
@@ -213,10 +237,11 @@ bot.getMe()
 
 returns `{u'username': u'mybot', u'first_name': u'cat tracker', u'is_bot': True, u'id': 00000008}`
 
-to get your telegram id:
+#### get your telegram id:
 
 - send a messages from telegram to `mybot`
 - fetch your message on the pi
+
 ```
 from pprint import pprint
 response = bot.getUpdates()
@@ -235,16 +260,10 @@ your id appears, such as: **u'id': 00000004**
 
 `bot.sendPhoto(00000004, photo=open('/home/pi/motion/detected/07-2018-01-06_205746-13.jpg', 'rb'), caption='motion detected')`
 
-- take snapshot on command
 
-- in `bash`:
-`curl -s http://localhost:8080/0/action/snapshot > /dev/null`
-- in python:
-`import requests; requests.get('http://localhost:8080/0/action/snapshot')`
+#### create commands for the bot
 
-- disable the join group with botfather
-
-- Commands, after sending `/setcommands` to the `BotFather`
+After sending `/setcommands` to the `BotFather`:
 
 ```
 time - Returns current time on pi
@@ -256,25 +275,113 @@ snapshot - Returns current image
 video - Returns last recorded video
 ```
 
-### run at startup
+Of note, it doesn't prevent the bot to receive other commands, it just helps to display commands and select them in telegram.
+
+#### python script that listen 
+
+here the script `listen_bot.py`, derived from the telepot documentation.
+
+Some comments:
+- the last video when requested is fetched from the sub-folder `vids`. If we use the main folder of detection,
+the last video could be an incomplete one form a newer detection. Hence, the command in `motion.conf` to move a finished video to the `vids` folder.
+- I failed to restrict the bot to communicate only with me. Might not be a big deal, but the code `if chat_id != 00000008` is not working. 
+- the webcontrol was set in the _RAW_ mode. Then the retrieved text can be directly send to your telegram account
+
+```{python}
+#!/usr/bin/python2.7
+
+import datetime
+import telepot
+import time
+import requests
+import os
+import glob
+from telepot.loop import MessageLoop
+
+def webcontrol(chat_id, type, cmd):
+    req = 'http://localhost:8080/0/'+type+'/'+cmd
+    res = requests.get(req)
+    bot.sendMessage(chat_id, res.text)
+
+def handle(msg):
+    chat_id = msg['chat']['id']
+    command = msg['text']
+    #FIXME does not work
+    #if chat_id != 00000008:
+    #    bot.sendMessage(chat_id, "Sorry this is a personal bot. Access Denied!")
+    #    continue
+
+    print 'Got command: %s' % command
+
+    if command == '/snapshot':
+        requests.get('http://localhost:8080/0/action/snapshot')
+    elif command == '/status':
+        webcontrol(chat_id, 'detection', 'status')
+    elif command == '/pause':
+        webcontrol(chat_id, 'detection', 'pause')
+    elif command == '/resume':
+        webcontrol(chat_id, 'detection', 'start')
+    elif command == '/check':
+        webcontrol(chat_id, 'detection', 'connection')
+    elif command == '/time':
+        bot.sendMessage(chat_id, 'now is '+str(datetime.datetime.now()))
+    elif command == '/video':
+        # the most recent video in this particular folder of complete vids
+        video = max(glob.iglob('/home/pi/motion/detected/vids/*.mp4'), key=os.path.getctime)
+        # send video, adapt the the first argument to your own telegram id
+        bot.sendVideo(00000008, video=open(video, 'rb'), caption='last video')
+    else:
+        bot.sendMessage(chat_id, "sorry, I don't know the command "+command)
+# adapt the following to the bot_id:bot_token
+bot = telepot.Bot('0000000004:bot_token')
+
+MessageLoop(bot, handle).run_as_thread()
+print 'I am listening ...'
+
+while 1:
+    time.sleep(10)
+```
+
+Now if the both `listen_bot.py` and `motion -c ~/motion/motion.conf` are running, the system should work.
+
+
+#### run scripts at startup
+
+Here, the following is working, but I am sure this is the right way to do, so use we care.
 
 in `/etc/rc.local`
 
 add the following lines
 
-```
+```{bash}
 # start listening to picatbot
 /home/pi/motion/telegrambot.sh &
 # start motion
 motion -c /home/pi/motion/motion.conf
 ```
 
+with `telegrambot.sh` being 
+
+```{bash}
+#!/bin/sh
+sleep 10
+sudo /home/pi/motion/listen_bot.py
+```
+
+#### Screenshots
+
 ### TODO
 
-- change the command line arg of `send*py` scripts with `argparse`
+Despite a functional system, some improvements I'd like to achieve:
+
+- restrict the bot to one user
 - remove pics/videos older than _xx_ days to save space
-- run the 2 services as a user without sudo
-- look into better settings for NoIR using [this thread](https://raspberrypi.stackexchange.com/questions/13818/auto-brightness-bypass-whilst-using-motion)
+- run the 2 services as a user without `sudo` rights
+- look into better settings for NoIR camera using [this thread](https://raspberrypi.stackexchange.com/questions/13818/auto-brightness-bypass-whilst-using-motion)
 
 
+## Conclusion
 
+Beyond the initial goal, catch the neighbor cats coming in, which actually I don't care about, it was fun to set-up the whole thing. Moreover, **telegram** offers a great service and offers a great interface for many applications. I knew about the [TeleR](XX) bot, that is actually easy to set-up.
+
+Don't hesitate to leave a comment below for any remarks or improvements that I overseen.
