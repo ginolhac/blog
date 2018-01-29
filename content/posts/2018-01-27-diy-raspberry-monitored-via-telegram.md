@@ -1,5 +1,5 @@
 ---
-title: DIY raspberry monitored via telegram
+title: home surveillance monitored via telegram
 author: Aurelien Ginolhac
 date: '2018-01-27'
 slug: diy-raspberry-monitored-via-telegram
@@ -33,9 +33,9 @@ I bought a [Pi3 starter budget kit](https://www.kubii.fr/fr/kits-raspberry-pi/19
 
 Additionally, I purchased:
 
-- [Pi camera NoIR]()
+- [Pi camera NoIR](https://www.raspberrypi.org/products/pi-noir-camera-v2/)
 
-Was hoping to get some decent pictures / videos with low light. Turned out that IR leds are needed. That goes in the [TODO](#todo) section.
+Was hoping to get some decent pictures / videos with low light. Turned out that IR leds are needed. That goes in the [TODO](#TODO) section.
 
 Here is an example of picture with low interior light. Colors are off, but quality is fine to me
 
@@ -86,7 +86,7 @@ network={
 }
 ```
 
-Of note, I recently acquired a pi **zeroWH**, for which I had to add 3 lines ([SO question]()).
+Of note, I recently acquired a pi **zeroWH**, for which I had to add 3 lines ([StackExchange question](https://raspberrypi.stackexchange.com/questions/75039/can-t-get-auto-wifi-connection-to-work-on-pi-zero-w-on-boot)).
 
 ```{bash}
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
@@ -369,6 +369,22 @@ sudo /home/pi/motion/listen_bot.py
 ```
 
 #### Screenshots
+
+Here are some examples of the telegram window
+
+- received a notification and later on, `/check` if connection is still on.
+
+![](/images/check.png)
+
+- received notification and ask for the corresponding video
+
+![](/images/last_video.png)
+
+this video works as a GIF directly in the window, here is the [mp4 file](/videos/cat_video.mp4)
+
+- **pause** the detection, and since no motion can be detected, ask for a **snapshot**
+
+![](/images/pause.png)
 
 ### TODO
 
