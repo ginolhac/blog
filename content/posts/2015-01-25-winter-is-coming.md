@@ -1,5 +1,5 @@
 ---
-title: "Winter Is Coming"
+title: "winter is coming"
 tags: [bike]
 date: 2015-01-25T14:38:35+01:00
 slug: winter-is-coming

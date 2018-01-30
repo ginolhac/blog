@@ -61,6 +61,7 @@ Song | Author
 
 
 ![](/images/unsolved.jpg)
+
 Song | Author 
 -----|--------
 [Small Fires](/tabs/small_fires.txt) | Philip Tanimura
