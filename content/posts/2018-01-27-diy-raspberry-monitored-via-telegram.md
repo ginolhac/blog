@@ -7,9 +7,7 @@ categories: []
 tags:
   - DIY
   - pi
-output:
-  blogdown::html_page:
-    toc: true
+toc: true
 ---
 
 
@@ -171,7 +169,7 @@ running **motion**:
 
 I choose to get the videos and several other changes made to the `motion` version **4.1.1.** and are reported in the complete _diff_ page below
 
-<a href="/data/motion_diff.html" target="_blank">**- diff page for motion.conf**</a>
+<a href="/data/motion_diff.html" target="_blank">diff page for motion.conf</a>
 
 The initial values are reported in red, in green: the new ones.
 
@@ -408,6 +406,6 @@ Despite a functional system, some improvements I'd like to achieve:
 
 ## Conclusion
 
-Beyond the initial goal, catch the neighbor cats coming in, which actually I don't care about, it was fun to set-up the whole thing. Moreover, **telegram** offers a great service and offers a great interface for many applications. I knew about the [TeleR](XX) bot, that is actually easy to set-up.
+Beyond the initial goal, catch the neighbor cats coming in, which actually I don't care about, it was fun to set-up the whole thing. Moreover, **telegram** offers a great service and offers a great interface for many applications. I knew about the [TeleR](http://danielmarcelino.github.io/blog/2017/may-the-force-of-r-be-with-you-always.html) bot, that is actually easy to set-up.
 
 Don't hesitate to leave a comment below for any remarks or improvements that I overseen.

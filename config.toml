@@ -2,7 +2,6 @@ baseurl = "http://ginolhac.github.io/"
 languageCode = "en"
 title = "Aurélien' blog"
 description = "blog about R, pi and related stuff"
-copyright = "&copy; 2018 Ginolhac"
 twitterAuthor = "@kingsushigino"
 theme = "hugo-theme-cactus-plus"
 relativeURLs = true # mandatory for link the theme
@@ -25,9 +24,13 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 [params]
     bio = "bioinformatic and data science"
 	  twitter = "kingsushigino"
+	  Author = "Ginolhac"
     enableRSS = false
+    
+    enableToc = true # would be nice to exclude some levels
 
     enableDisqus = true
+    
     disqusShortname = "ginolhac-github-io"
 
 	  enableGoogleAnalytics = true

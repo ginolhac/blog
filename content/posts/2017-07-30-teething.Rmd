@@ -6,6 +6,9 @@ slug: teething process
 categories: []
 tags:
   - R
+output:
+  blogdown::html_page:
+    toc: true
 ---
 
 ```{r setup, include=FALSE}
