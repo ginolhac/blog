@@ -2,7 +2,7 @@
 title: "teething"
 author: "Aurélien Ginolhac"
 date: "2016-07-31"
-slug: teething
+slug: teething process
 categories: []
 tags:
   - R

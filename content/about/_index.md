@@ -2,6 +2,7 @@
 title: "à propos"
 date: "2016-01-01"
 hidden: true
+disabledisqus: true
 ---
 
 Hi, I am a bioinfomatician at the [Life Sciences Research Unit](http://wwwen.uni.lu/recherche/fstc/life_sciences_research_unit/people/aurelien_ginolhac) at the [University of Luxembourg](http://wwwen.uni.lu/).

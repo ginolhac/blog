@@ -10,9 +10,10 @@ tags:
 output:
   blogdown::html_page:
     toc: true
-    toc_depth: 1
-    number_sections: true
 ---
+
+
+
 
 ## Rationale
 
@@ -168,14 +169,17 @@ running **motion**:
 
 ### tweaks to the initial tutorial
 
-I choose to get the videos 
+I choose to get the videos and several other changes made to the `motion` version **4.1.1.** and are reported in the complete _diff_ page below
 
-`gdiff /etc/motion/motion.conf ~/motion/motion.conf`
+<a href="/data/motion_diff.html" target="_blank">**- diff page for motion.conf**</a>
 
-```
-lighswitch 80
-auto_brightness on
-```
+The initial values are reported in red, in green: the new ones.
+
+
+<!-- https://www.npmjs.com/package/diff2html-cli
+diff2html -i file ../public/motion.diff -F test.html
+-->
+
 
 ### see live streaming
 
@@ -380,7 +384,13 @@ Here are some examples of the telegram window
 
 ![](/images/last_video.png)
 
-this video works as a GIF directly in the window, here is the [mp4 file](/videos/cat_video.mp4)
+this video works as a GIF directly in the window:
+
+![gif file](/videos/cat_video.gif)
+
+<!-- ffmpeg -i videos/cat_video.mp4 -r 10 -f image2pipe -vf scale=320:-1 -vcodec ppm - | \
+  convert -delay 5 -loop 0 - cat_video.gif
+-->
 
 - **pause** the detection, and since no motion can be detected, ask for a **snapshot**
 
