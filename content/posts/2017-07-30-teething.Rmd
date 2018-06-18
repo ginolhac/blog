@@ -3,6 +3,7 @@ title: "teething"
 author: "Aurélien Ginolhac"
 date: "2016-07-31"
 slug: teething process
+description: "Compare teething for two kids"
 categories: []
 tags:
   - R

@@ -1,0 +1,17 @@
+<div class="profile">
+    <section id="wrapper">
+        <header id="header">
+            <a href='{{ .Site.BaseURL }}about'>
+              <!-- is page is about, change avatar for real picture  -->
+              {{ $url := replace .Permalink .Site.BaseURL "" }}
+              {{ if eq $url "about" }} 
+                <img id="avatar" class="2x" src="{{ .Site.BaseURL }}images/bio-photo.jpg"/>
+             {{ else }}
+                <img id="avatar" class="2x" src="{{ .Site.BaseURL }}images/avatar.png"/>
+              {{ end }}
+            </a>
+            <h1>{{ .Site.Title }}</h1>
+            {{ with .Site.Params.bio }}<h2>{{ . | markdownify }}</h2>{{ end }}
+        </header>
+    </section>
+</div>

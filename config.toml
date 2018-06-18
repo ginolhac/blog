@@ -26,15 +26,15 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 	  twitter = "kingsushigino"
 	  Author = "Ginolhac"
     enableRSS = false
-    
-    enableSummary = false # with a single sentence
-    
+    #avatarLink = "https://github.com/ginolhac" to link avatar to github home
+    enableSummary = true # with a single sentence
+    useDescriptionReplaceSummary = true
     enableToc = true # would be nice to exclude some levels
 
     enableDisqus = true
     
     disqusShortname = "ginolhac-github-io"
-
+    disabledisqus = true # only for about page
 	  enableGoogleAnalytics = true
 	  
 	  highlight = true
@@ -42,7 +42,6 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
     home = ""
     karate = ""
-	  about = ""
 	  archive = ""
 
     # Choose a font for the social icons in the footer. Either "mono-social" or "font-awesome"

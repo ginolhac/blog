@@ -3,6 +3,7 @@ title: home surveillance monitored via telegram
 author: Aurelien Ginolhac
 date: '2018-01-27'
 slug: diy-raspberry-monitored-via-telegram
+description: "using telepot and the NoIR camera"
 categories: []
 tags:
   - DIY
