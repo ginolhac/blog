@@ -196,7 +196,7 @@ But of course, there are false alarms, such as when the light comes in/out sudde
 
 ![](/images/light_false_alarm.jpg)
 
-the parameter `lighswitch 80` reduced the issue but it still exists.
+the parameter `lightswitch 80` reduced the issue but it still exists.
 
 ## Communication with motion _via_ telegram
 
@@ -348,27 +348,110 @@ while 1:
 Now if the both `listen_bot.py` and `motion -c ~/motion/motion.conf` are running, the system should work.
 
 
+#### sending scripts
+
+they are called in the `motion.conf` file.
+
+first, `send_detection.py`
+
+```{python}
+#!/usr/bin/python2.7
+
+import telepot
+import sys
+
+bot = telepot.Bot('496094898:AAERzRlE4PgCl3TbDiE8b5h-ldQR_G4X9_M')
+
+pic = sys.argv[1]
+
+# change caption if it is a snapshot or motion
+if pic.endswith("snapshot.jpg"):
+    cap = 'snapshot'
+else:
+    cap = 'motion detected'
+
+bot.sendPhoto(35700834, photo=open(pic, 'rb'), caption=cap)
+
+exit(0)
+```
+
+second, `send_message.py`
+```{python}
+#!/usr/bin/python2.7
+
+import telepot
+import sys
+
+bot = telepot.Bot('496094898:AAERzRlE4PgCl3TbDiE8b5h-ldQR_G4X9_M')
+
+text = sys.argv[1]
+
+bot.sendMessage(35700834, text)
+```
+
 #### run scripts at startup
+
+**Edit 2018-06-19**
+
+##### for listening
+
+I am now using `systemd`. Cleaner and safer.
 
 Here, the following is working, but I am sure this is the right way to do, so use we care.
 
-in `/etc/rc.local`
-
-add the following lines
+add the file `listen.service` in the folder `/etc/systemd/system`:
 
 ```{bash}
-# start listening to picatbot
-/home/pi/motion/telegrambot.sh &
-# start motion
-motion -c /home/pi/motion/motion.conf
+[Unit]
+Description=Listen to foo telegram bot
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python2.7 -u listen_bot.py
+WorkingDirectory=/home/pi/motion/
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=motion
+
+[Install]
+WantedBy=multi-user.target
 ```
 
-with `telegrambot.sh` being 
+now as example, you can check the **status** of this new service `listen`
+
+```
+pi@raspberrypi:/etc/systemd/system $ service listen status
+● listen.service - Listen to foo telegram bot
+   Loaded: loaded (/etc/systemd/system/listen.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sun 2018-05-13 21:51:50 CEST; 1 months 6 days ago
+ Main PID: 502 (python2.7)
+   CGroup: /system.slice/listen.service
+           └─502 /usr/bin/python2.7 -u listen_bot.py
+
+May 13 21:51:50 raspberrypi systemd[1]: Started Listen to foo telegram bot.
+May 13 21:51:51 raspberrypi python2.7[502]: I am listening ...
+Jun 19 20:52:17 raspberrypi python2.7[502]: Got command: /time
+```
+
+And, safer since both `motion` and `listen` are running as the user `motion` who does not have `sudo` rights.
+
+##### For motion
+
+I am now using the **daemon** mode to only benefit from `systemd`
+
+- point the usual conf file towards the tweaked version in your home
 
 ```{bash}
-#!/bin/sh
-sleep 10
-sudo /home/pi/motion/listen_bot.py
+cd /etc/motion
+mv motion.conf motion.conf.bak
+ln -s /home/pi/motion/motion.conf .
+```
+
+be sure to have the correct smblink
+
+```{bash}
+motion.conf -> /home/pi/motion/motion.conf
 ```
 
 #### Screenshots
@@ -399,9 +482,11 @@ this video works as a GIF directly in the window:
 
 Despite a functional system, some improvements I'd like to achieve:
 
-- restrict the bot to one user
+- restrict the bot to one user: see Winston recommendation in comments, seems to work nicely
+- add gracefull stop for `listen` service
+- I bought a IP camera, and `motion` should work with both. Haven't spent enough time configuring it
 - remove pics/videos older than _xx_ days to save space
-- run the 2 services as a user without `sudo` rights
+- ~~run the 2 services as a user without `sudo` rights~~
 - look into better settings for NoIR camera using [this thread](https://raspberrypi.stackexchange.com/questions/13818/auto-brightness-bypass-whilst-using-motion)
 
 
