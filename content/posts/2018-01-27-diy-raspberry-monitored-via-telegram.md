@@ -309,10 +309,10 @@ def webcontrol(chat_id, type, cmd):
 def handle(msg):
     chat_id = msg['chat']['id']
     command = msg['text']
-    #FIXME does not work
-    #if chat_id != 00000008:
-    #    bot.sendMessage(chat_id, "Sorry this is a personal bot. Access Denied!")
-    #    continue
+    #should work thanks to Winston
+    if msg['from']['id'] != 00000008:
+        bot.sendMessage(chat_id, "Sorry this is a personal bot. Access Denied!")
+        exit(1)
 
     print 'Got command: %s' % command
 
@@ -360,7 +360,7 @@ first, `send_detection.py`
 import telepot
 import sys
 
-bot = telepot.Bot('496094898:AAERzRlE4PgCl3TbDiE8b5h-ldQR_G4X9_M')
+bot = telepot.Bot('0000000004:bot_token')
 
 pic = sys.argv[1]
 
@@ -370,7 +370,7 @@ if pic.endswith("snapshot.jpg"):
 else:
     cap = 'motion detected'
 
-bot.sendPhoto(35700834, photo=open(pic, 'rb'), caption=cap)
+bot.sendPhoto(00000004, photo=open(pic, 'rb'), caption=cap)
 
 exit(0)
 ```
@@ -382,11 +382,11 @@ second, `send_message.py`
 import telepot
 import sys
 
-bot = telepot.Bot('496094898:AAERzRlE4PgCl3TbDiE8b5h-ldQR_G4X9_M')
+bot = telepot.Bot('0000000004:bot_token')
 
 text = sys.argv[1]
 
-bot.sendMessage(35700834, text)
+bot.sendMessage(00000004, text)
 ```
 
 #### run scripts at startup
@@ -482,7 +482,7 @@ this video works as a GIF directly in the window:
 
 Despite a functional system, some improvements I'd like to achieve:
 
-- restrict the bot to one user: see Winston recommendation in comments, seems to work nicely
+- restrict the bot to one user: see **Winston Smith** recommendation in comments, seems to work nicely
 - add gracefull stop for `listen` service
 - I bought a IP camera, and `motion` should work with both. Haven't spent enough time configuring it
 - remove pics/videos older than _xx_ days to save space
